@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora ERP/CRM — Gerundio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* Paleta Gerundio */
+    --blue: #465FFF;
+    --blue-hover: #2E47E8;
+    --blue-light: #7AF7FF;
+    --aqua: #01FFB4;
+    --rose: #F425AE;
+    --yellow: #DDFF00;
+
+    --black: #000000;
+    --white: #FFFFFF;
+    --gray-50: #FAFAFA;
+    --gray-100: #F2F2F2;
+    --gray-200: #E5E5E5;
+    --gray-300: #D4D4D4;
+    --gray-500: #737373;
+    --gray-700: #404040;
+    --gray-900: #171717;
+
+    --text: #0A0A0A;
+    --text-muted: #525252;
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --border: #E5E5E5;
+    --border-strong: #0A0A0A;
+
+    --radius: 4px;
+    --radius-lg: 6px;
+
+    --font-display: 'Archivo Black', 'Helvetica Neue', sans-serif;
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'DM Mono', 'SF Mono', Menlo, monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 64px; }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  header {
+    background: var(--black);
+    color: var(--white);
+    margin: 0 -24px 40px;
+    padding: 56px 48px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .container > header { margin-left: -24px; margin-right: -24px; }
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 280px; height: 100%;
+    background: var(--blue);
+    clip-path: polygon(40% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.95;
+  }
+  .header-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 56px;
+    align-items: end;
+    position: relative;
+    z-index: 1;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 38px;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    color: var(--white);
+  }
+  .wordmark-small {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--white);
+    opacity: 0.6;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-family: var(--font-sans);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    max-width: 720px;
+  }
+  header h1 em {
+    font-style: normal;
+    color: var(--blue-light);
+  }
+  header .lede {
+    margin-top: 18px;
+    font-size: 15px;
+    opacity: 0.75;
+    max-width: 620px;
+    line-height: 1.55;
+  }
+
+  /* ── SECTIONS ───────────────────────────────────────────── */
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.05em;
+  }
+  .section-head h2 {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    flex: 1;
+  }
+  .section-head .gerund {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .section-intro {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+
+  /* ── SCENARIOS ──────────────────────────────────────────── */
+  .scenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .scenario-btn {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    color: var(--text);
+    position: relative;
+  }
+  .scenario-btn:hover {
+    border-color: var(--black);
+    transform: translateY(-1px);
+  }
+  .scenario-btn.active {
+    border-color: var(--blue);
+    border-width: 2px;
+    padding: 19px;
+    background: var(--white);
+  }
+  .scenario-btn.active::before {
+    content: '';
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .scenario-btn .name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .scenario-btn .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .scenario-btn .price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    padding-top: 10px;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .scenario-btn .price::before {
+    content: '→';
+    color: var(--blue);
+  }
+
+  /* ── TABLE ──────────────────────────────────────────────── */
+  table.calc { width: 100%; border-collapse: collapse; }
+  table.calc th {
+    text-align: left;
+    padding: 12px 8px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--black);
+  }
+  table.calc td {
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+  }
+  table.calc td.num {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  table.calc input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    background: var(--white);
+    color: var(--text);
+    transition: all 0.12s ease;
+  }
+  table.calc input[type="number"]:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(70, 95, 255, 0.15);
+  }
+  .section-h td {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 12px;
+  }
+  .role-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--black);
+  }
+  .role-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .subtotal-row td {
+    background: var(--gray-50);
+    font-weight: 600;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .total-row td {
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 17px;
+    padding: 18px 12px;
+    letter-spacing: -0.01em;
+    border-bottom: none;
+  }
+  .total-row td.num { font-family: var(--font-mono); }
+
+  /* ── ACTIONS / FOOTER ───────────────────────────────────── */
+  .footer-info {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .footer-info .stats {
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .footer-info strong {
+    color: var(--black);
+    font-weight: 600;
+  }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  button.action {
+    background: var(--white);
+    border: 1px solid var(--black);
+    border-radius: var(--radius);
+    padding: 9px 16px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--black);
+    transition: all 0.12s ease;
+    letter-spacing: 0.02em;
+  }
+  button.action:hover {
+    background: var(--black);
+    color: var(--white);
+  }
+  button.action.primary {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+  button.action.primary:hover {
+    background: var(--blue-hover);
+    border-color: var(--blue-hover);
+  }
+  button.action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── COMPARISON ─────────────────────────────────────────── */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .comp-card {
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    position: relative;
+  }
+  .comp-card.current {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+  .comp-card.partner {
+    background: var(--gray-50);
+  }
+  .comp-card.diff {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+  .comp-card .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+  .comp-card.current .label,
+  .comp-card.diff .label { opacity: 0.7; }
+  .comp-card .value {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 500;
+    margin-top: 12px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .comp-card .sub {
+    font-size: 12px;
+    margin-top: 6px;
+    opacity: 0.75;
+    line-height: 1.4;
+  }
+
+  /* ── PROS / CONS ────────────────────────────────────────── */
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .pros, .cons {
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+  .pros { border-left: 4px solid var(--aqua); }
+  .cons { border-left: 4px solid var(--rose); }
+  .pros h3, .cons h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+  .pros h3 { color: var(--black); }
+  .cons h3 { color: var(--black); }
+  .pros h3 .tag, .cons h3 .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 6px;
+    border-radius: 100px;
+    font-size: 10px;
+  }
+  .pros h3 .tag { background: var(--aqua); color: var(--black); }
+  .cons h3 .tag { background: var(--rose); color: var(--white); }
+  .pros ul, .cons ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .pros li, .cons li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .pros li:last-child, .cons li:last-child { border-bottom: none; }
+  .pros li::before {
+    content: '+';
+    color: var(--black);
+    background: var(--aqua);
+    font-weight: 700;
+    position: absolute;
+    left: 0; top: 8px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+  .cons li::before {
+    content: '−';
+    color: var(--white);
+    background: var(--rose);
+    font-weight: 700;
+    position: absolute;
+    left: 0; top: 8px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  /* ── ARCHITECTURE ───────────────────────────────────────── */
+  .arch-container {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    overflow-x: auto;
+    border: 1px solid var(--gray-100);
+  }
+  .arch-container svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* ── METHODOLOGY ────────────────────────────────────────── */
+  .methodology {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .methodology p { margin-bottom: 12px; }
+  .methodology p strong { color: var(--black); font-weight: 600; }
+  .methodology code {
+    background: var(--black);
+    color: var(--blue-light);
+    padding: 3px 8px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .conversion-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+  .conversion-table td, .conversion-table th {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+  }
+  .conversion-table th {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--black);
+    text-align: left;
+  }
+  .conversion-table td:nth-child(3) {
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+  .conversion-table tr.highlight td {
+    background: var(--blue);
+    color: var(--white);
+  }
+  .conversion-table tr.highlight td strong {
+    color: var(--white);
+  }
+
+  /* ── PRINT ──────────────────────────────────────────────── */
+  @media print {
+    body { background: white; }
+    .scenario-btn, button.action { display: none; }
+    section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    header { background: white !important; color: black !important; border: 2px solid black; }
+    header::before { display: none; }
+    .wordmark { color: black !important; }
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .container { padding: 0 16px 32px; }
+    header { margin: 0 -16px 24px; padding: 36px 24px; }
+    header::before { width: 80px; }
+    .wordmark { font-size: 26px; }
+    section { padding: 20px; }
+    .section-head { flex-wrap: wrap; gap: 8px; }
+    .section-head h2 { font-size: 18px; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .pros-cons { grid-template-columns: 1fr; }
+    table.calc input[type="number"] { font-size: 12px; padding: 6px 8px; }
+    .total-row td { font-size: 14px; padding: 14px 8px; }
+    .footer-info { flex-direction: column; align-items: flex-start; }
+    .header-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-grid">
+    <div>
+      <div class="wordmark">GERUNDIO</div>
+      <div class="wordmark-small">Ideas en acción</div>
+    </div>
+    <div>
+      <h1>Calculadora de costos · <em>Implementación ERP/CRM</em></h1>
+      <p class="lede">Comparativo Híbrida vs Partner. Costos internos cargados. Ajusta horas y tarifas en vivo.</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2>Eligiendo escenario</h2>
+    <span class="gerund">Eligiendo</span>
+  </div>
+  <p class="section-intro">Haz clic en un escenario para cargar valores típicos. Después puedes ajustar libremente cada celda.</p>
+  <div class="scenarios">
+    <button class="scenario-btn" data-scenario="hibrida">
+      <div class="name">Opción Híbrida</div>
+      <div class="desc">Partner Odoo implementa core + equipo interno hace diferenciación (n8n, IA, ClickUp)</div>
+      <div class="price">~$1.45M MXN</div>
+    </button>
+    <button class="scenario-btn active" data-scenario="austera">
+      <div class="name">Opción Austera</div>
+      <div class="desc">Equipo interno hace todo + asesor externo solo para guiar y validar</div>
+      <div class="price">~$0.89M MXN</div>
+    </button>
+    <button class="scenario-btn" data-scenario="partner">
+      <div class="name">Partner solo</div>
+      <div class="desc">Implementación llave en mano del Partner — sin equipo interno, sin diferenciación</div>
+      <div class="price">$694,500 MXN</div>
+    </button>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2>Calculando — desglose por rol</h2>
+    <span class="gerund">Calculando</span>
+  </div>
+  <table class="calc">
+    <thead>
+      <tr>
+        <th style="width:36%">Rol</th>
+        <th style="width:18%">Horas</th>
+        <th style="width:20%">$ / hora cargado</th>
+        <th style="width:26%;text-align:right">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="section-h"><td colspan="4">Equipo interno · desarrollo</td></tr>
+      <tr>
+        <td><div class="role-name">Senior Backend</div><div class="role-desc">Odoo, CFDI, integraciones · ≈ $32K netos/mes</div></td>
+        <td><input type="number" id="h-back" min="0" step="10"/></td>
+        <td><input type="number" id="r-back" min="0" step="10"/></td>
+        <td class="num" id="s-back"></td>
+      </tr>
+      <tr>
+        <td><div class="role-name">Senior Fullstack</div><div class="role-desc">n8n, IA, glue code · $33K netos/mes</div></td>
+        <td><input type="number" id="h-fs" min="0" step="10"/></td>
+        <td><input type="number" id="r-fs" min="0" step="10"/></td>
+        <td class="num" id="s-fs"></td>
+      </tr>
+      <tr>
+        <td><div class="role-name">Senior Frontend</div><div class="role-desc">Dashboards, vistas Odoo · ≈ $29K netos/mes</div></td>
+        <td><input type="number" id="h-front" min="0" step="10"/></td>
+        <td><input type="number" id="r-front" min="0" step="10"/></td>
+        <td class="num" id="s-front"></td>
+      </tr>
+      <tr class="section-h"><td colspan="4">Equipo interno · gestión y validación</td></tr>
+      <tr>
+        <td><div class="role-name">PM</div><div class="role-desc">Coordinación, planning, stakeholders · ≈ $24K netos/mes</div></td>
+        <td><input type="number" id="h-pm" min="0" step="10"/></td>
+        <td><input type="number" id="r-pm" min="0" step="10"/></td>
+        <td class="num" id="s-pm"></td>
+      </tr>
+      <tr>
+        <td><div class="role-name">Marketing / Ventas</div><div class="role-desc">Requerimientos, UAT · ≈ $20K netos/mes</div></td>
+        <td><input type="number" id="h-mkt" min="0" step="10"/></td>
+        <td><input type="number" id="r-mkt" min="0" step="10"/></td>
+        <td class="num" id="s-mkt"></td>
+      </tr>
+      <tr>
+        <td><div class="role-name">QA</div><div class="role-desc">Testing, automatización · ≈ $18K netos/mes</div></td>
+        <td><input type="number" id="h-qa" min="0" step="10"/></td>
+        <td><input type="number" id="r-qa" min="0" step="10"/></td>
+        <td class="num" id="s-qa"></td>
+      </tr>
+      <tr class="subtotal-row">
+        <td>Subtotal equipo interno</td>
+        <td class="num" id="hrs-int"></td>
+        <td></td>
+        <td class="num" id="sub-int"></td>
+      </tr>
+      <tr class="section-h"><td colspan="4">Externo · cash real saliendo de la empresa</td></tr>
+      <tr>
+        <td><div class="role-name">Asesor / Partner Odoo</div><div class="role-desc">Capacitación, bolsa, quality gates, o implementación completa</div></td>
+        <td><input type="number" id="h-ext" min="0" step="10"/></td>
+        <td><input type="number" id="r-ext" min="0" step="100"/></td>
+        <td class="num" id="s-ext"></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="3">TOTAL PROYECTO</td>
+        <td class="num" id="total"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footer-info">
+    <div class="stats">Horas internas: <strong id="ft-hrs"></strong> · Costo cargado promedio: <strong id="ft-avg"></strong>/h · Plazo: <strong id="ft-time"></strong></div>
+    <div class="actions">
+      <button class="action" onclick="resetValues()">Restablecer</button>
+      <button class="action" onclick="window.print()">Imprimir</button>
+      <button class="action" onclick="exportConfig()">Exportar config</button>
+      <button class="action primary" id="btn-pdf" onclick="generatePDF()">Descargar PDF →</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2>Comparando — tu configuración vs Partner solo</h2>
+    <span class="gerund">Comparando</span>
+  </div>
+  <div class="comparison-grid">
+    <div class="comp-card current">
+      <div class="label">Tu configuración</div>
+      <div class="value" id="comp-current">—</div>
+      <div class="sub" id="comp-current-sub">Equipo interno + asesor</div>
+    </div>
+    <div class="comp-card partner">
+      <div class="label">Partner solo (referencia)</div>
+      <div class="value">$694,500</div>
+      <div class="sub">Implementación llave en mano</div>
+    </div>
+    <div class="comp-card diff">
+      <div class="label">Diferencia</div>
+      <div class="value" id="comp-diff">—</div>
+      <div class="sub" id="comp-diff-sub">vs Partner solo</div>
+    </div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h3><span class="tag">+ GANAS</span>Lo que ganas vs Partner solo</h3>
+      <ul>
+        <li>Capa IA aplicada (scoring de leads, forecast)</li>
+        <li>Integración con ClickUp incluida</li>
+        <li>Dashboards BI personalizados (más allá de Odoo Studio)</li>
+        <li>Capacidad y conocimiento Odoo internos</li>
+        <li>IP propia sobre la capa diferencial</li>
+        <li>Sin dependencia futura del Partner para iterar</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h3><span class="tag">− SACRIFICAS</span>Lo que sacrificas vs Partner solo</h3>
+      <ul>
+        <li>Risk transfer total (lo asume el equipo interno)</li>
+        <li>Curva de aprendizaje del equipo en Odoo</li>
+        <li>Menos metodología formal as-is/to-be</li>
+        <li>Coordinación entre dos frentes (si Híbrida)</li>
+        <li>Sin SLA estricto del Partner</li>
+        <li>Mayor carga sobre el equipo interno</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2>Conectando — arquitectura de referencia con n8n</h2>
+    <span class="gerund">Conectando</span>
+  </div>
+  <p class="section-intro">Esta es la arquitectura técnica que aplica para Híbrida y Austera. El equipo interno construye la capa central (n8n) que conecta Odoo con todos los sistemas.</p>
+  <div class="arch-container">
+    <svg width="100%" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Column titles -->
+      <text x="120" y="28" text-anchor="middle" font-size="10" font-weight="500" fill="#737373" letter-spacing="1.2">DISPARADORES</text>
+      <text x="340" y="28" text-anchor="middle" font-size="10" font-weight="500" fill="#737373" letter-spacing="1.2">ORQUESTADOR</text>
+      <text x="560" y="28" text-anchor="middle" font-size="10" font-weight="500" fill="#737373" letter-spacing="1.2">SISTEMAS</text>
+
+      <!-- Triggers (left column) -->
+      <g><rect x="40" y="60" width="160" height="56" rx="4" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="120" y="82" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Eventos CRM</text>
+         <text x="120" y="100" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Pipe, leads, etapas</text></g>
+      <g><rect x="40" y="150" width="160" height="56" rx="4" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="120" y="172" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Programados</text>
+         <text x="120" y="190" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Cron, reportes</text></g>
+      <g><rect x="40" y="240" width="160" height="56" rx="4" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="120" y="262" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Entradas externas</text>
+         <text x="120" y="280" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Email, formularios</text></g>
+
+      <!-- n8n core (center, blue) -->
+      <g><rect x="240" y="50" width="200" height="320" rx="6" fill="#465FFF" stroke="#465FFF" stroke-width="1"/>
+         <text x="340" y="86" text-anchor="middle" dominant-baseline="central" font-family="Archivo Black, sans-serif" font-size="22" fill="#FFFFFF" letter-spacing="-0.5">n8n</text>
+         <text x="340" y="108" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#FFFFFF" opacity="0.8" letter-spacing="1">ORQUESTADOR LOW-CODE</text>
+         <line x1="270" y1="128" x2="410" y2="128" stroke="#FFFFFF" stroke-width="0.5" opacity="0.3"/>
+         <text x="340" y="158" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Notificando</text>
+         <text x="340" y="186" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Scoreando con IA</text>
+         <text x="340" y="214" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Pronosticando</text>
+         <text x="340" y="242" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Reportando</text>
+         <text x="340" y="270" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Sincronizando</text>
+         <text x="340" y="298" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Asistiendo en Slack</text>
+         <text x="340" y="326" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#FFFFFF">Cotizando</text></g>
+
+      <!-- Connected systems (right column) -->
+      <g><rect x="480" y="40" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="560" y="59" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Odoo</text>
+         <text x="560" y="76" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">CRM, ventas, conta</text></g>
+      <g><rect x="480" y="105" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="560" y="124" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Comunicación</text>
+         <text x="560" y="141" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Slack, email, cal</text></g>
+      <g><rect x="480" y="170" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="560" y="189" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">IA / LLM</text>
+         <text x="560" y="206" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Claude, OpenAI</text></g>
+      <g><rect x="480" y="235" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="560" y="254" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Facturación</text>
+         <text x="560" y="271" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">CFDI 4.0 / PAC</text></g>
+      <g><rect x="480" y="300" width="160" height="50" rx="4" fill="#FFFFFF" stroke="#0A0A0A" stroke-width="1"/>
+         <text x="560" y="319" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#0A0A0A">Dashboard BI</text>
+         <text x="560" y="336" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#525252">Reportes en vivo</text></g>
+
+      <!-- Connecting lines -->
+      <line x1="200" y1="88" x2="240" y2="88" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="200" y1="178" x2="240" y2="178" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="200" y1="268" x2="240" y2="268" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="440" y1="65" x2="480" y2="65" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="440" y1="130" x2="480" y2="130" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="440" y1="195" x2="480" y2="195" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="440" y1="260" x2="480" y2="260" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="440" y1="325" x2="480" y2="325" stroke="#0A0A0A" stroke-width="1.5" marker-end="url(#arr)"/>
+    </svg>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2>Documentando — metodología de costos internos</h2>
+    <span class="gerund">Documentando</span>
+  </div>
+  <div class="methodology">
+    <p>Las tarifas por hora son <strong>costo cargado</strong>: lo que realmente le cuesta a la empresa tener a esa persona, no lo que recibe en el cheque ni la tarifa de mercado de un freelancer.</p>
+    <p>Conversión rápida desde sueldo neto mensual: <code>$/hora cargado ≈ sueldo neto / 80</code></p>
+    <table class="conversion-table">
+      <thead><tr><th>Modelo</th><th>Cálculo desde $33K netos</th><th>$/hora</th><th>Cuándo usar</th></tr></thead>
+      <tbody>
+        <tr><td>Neto</td><td>$33K ÷ 160h</td><td>$206</td><td>Cash que recibe la persona</td></tr>
+        <tr><td>Bruto</td><td>$33K × 1.42 ÷ 160h</td><td>$290</td><td>Lo que reporta el SAT</td></tr>
+        <tr class="highlight"><td><strong>Cargado</strong></td><td>$33K × 2 ÷ 160h</td><td>$400</td><td><strong>Project cost accounting (este modelo)</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px">El multiplicador 2x del neto al cargado se compone de: ISR retenido (~1.42x), IMSS/INFONAVIT/SAR patronal (~1.27x) y aguinaldo + prima vacacional + prestaciones (~1.10x). Confirma con tu área de finanzas el multiplicador exacto de tu empresa.</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+const presets = {
+  hibrida: {
+    label: 'Opción Híbrida',
+    desc: 'Partner Odoo + equipo interno (diferenciación)',
+    timeStr: '6 meses',
+    values: {
+      back:  { h: 450, r: 400 },
+      fs:    { h: 650, r: 400 },
+      front: { h: 400, r: 360 },
+      pm:    { h: 250, r: 300 },
+      mkt:   { h: 120, r: 250 },
+      qa:    { h: 280, r: 220 },
+      ext:   { h: 1, r: 694500 }
+    }
+  },
+  austera: {
+    label: 'Opción Austera',
+    desc: 'Equipo interno hace todo + asesor externo solo para guiar',
+    timeStr: '5 meses',
+    values: {
+      back:  { h: 600, r: 400 },
+      fs:    { h: 550, r: 400 },
+      front: { h: 450, r: 360 },
+      pm:    { h: 250, r: 300 },
+      mkt:   { h: 120, r: 250 },
+      qa:    { h: 280, r: 220 },
+      ext:   { h: 100, r: 1500 }
+    }
+  },
+  partner: {
+    label: 'Partner solo',
+    desc: 'Implementación llave en mano del Partner',
+    timeStr: '5 meses',
+    values: {
+      back:  { h: 0, r: 400 },
+      fs:    { h: 0, r: 400 },
+      front: { h: 0, r: 360 },
+      pm:    { h: 50, r: 300 },
+      mkt:   { h: 60, r: 250 },
+      qa:    { h: 0, r: 220 },
+      ext:   { h: 1, r: 694500 }
+    }
+  }
+};
+
+const roleIds = ['back','fs','front','pm','mkt','qa','ext'];
+const internalRoles = ['back','fs','front','pm','mkt','qa'];
+let activeScenario = 'austera';
+
+function fmt(n) { return n.toLocaleString('es-MX', {maximumFractionDigits:0}); }
+function $(id) { return document.getElementById(id); }
+
+function loadPreset(name) {
+  const p = presets[name];
+  if (!p) return;
+  Object.entries(p.values).forEach(([id, v]) => {
+    $('h-'+id).value = v.h;
+    $('r-'+id).value = v.r;
+  });
+  activeScenario = name;
+  document.querySelectorAll('.scenario-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.scenario === name);
+  });
+  saveState();
+  calc();
+}
+
+function calc() {
+  let total = 0, intCost = 0, intHrs = 0;
+  roleIds.forEach(id => {
+    const h = Math.max(0, parseFloat($('h-'+id).value) || 0);
+    const r = Math.max(0, parseFloat($('r-'+id).value) || 0);
+    const sub = Math.round(h * r);
+    $('s-'+id).textContent = '$' + fmt(sub);
+    total += sub;
+    if (internalRoles.includes(id)) { intCost += sub; intHrs += h; }
+  });
+  $('hrs-int').textContent = fmt(intHrs);
+  $('sub-int').textContent = '$' + fmt(intCost);
+  $('total').textContent = '$' + fmt(total);
+  $('ft-hrs').textContent = fmt(intHrs);
+  $('ft-avg').textContent = '$' + (intHrs > 0 ? fmt(Math.round(intCost / intHrs)) : '0');
+  $('ft-time').textContent = presets[activeScenario]?.timeStr || '—';
+
+  $('comp-current').textContent = '$' + fmt(total);
+  $('comp-current-sub').textContent = presets[activeScenario]?.desc || 'Configuración personalizada';
+  const diff = total - 694500;
+  const diffEl = $('comp-diff');
+  diffEl.textContent = (diff >= 0 ? '+' : '−') + '$' + fmt(Math.abs(diff));
+  $('comp-diff-sub').textContent = diff >= 0 ? 'más caro vs Partner solo' : 'más barato vs Partner solo';
+}
+
+function resetValues() {
+  loadPreset(activeScenario);
+}
+
+function saveState() {
+  try {
+    const state = { scenario: activeScenario, values: {} };
+    roleIds.forEach(id => {
+      state.values[id] = { h: $('h-'+id).value, r: $('r-'+id).value };
+    });
+    localStorage.setItem('erp-calc-state', JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('erp-calc-state');
+    if (saved) {
+      const state = JSON.parse(saved);
+      activeScenario = state.scenario || 'austera';
+      Object.entries(state.values).forEach(([id, v]) => {
+        $('h-'+id).value = v.h;
+        $('r-'+id).value = v.r;
+      });
+      document.querySelectorAll('.scenario-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.scenario === activeScenario);
+      });
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+function exportConfig() {
+  const lines = ['Calculadora ERP/CRM — Gerundio', '', 'Escenario: ' + (presets[activeScenario]?.label || 'Personalizado'), ''];
+  const labels = { back:'Senior Backend', fs:'Senior Fullstack', front:'Senior Frontend', pm:'PM', mkt:'Marketing/Ventas', qa:'QA', ext:'Externo (asesor/Partner)' };
+  let total = 0;
+  roleIds.forEach(id => {
+    const h = parseFloat($('h-'+id).value) || 0;
+    const r = parseFloat($('r-'+id).value) || 0;
+    const s = h * r;
+    total += s;
+    lines.push(`${labels[id]}: ${h}h × $${fmt(r)}/h = $${fmt(s)}`);
+  });
+  lines.push('', `TOTAL: $${fmt(total)} MXN`);
+  const text = lines.join('\n');
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `calculadora_erp_${activeScenario}_${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+document.querySelectorAll('.scenario-btn').forEach(b => {
+  b.addEventListener('click', () => loadPreset(b.dataset.scenario));
+});
+
+roleIds.forEach(id => {
+  $('h-'+id).addEventListener('input', () => { saveState(); calc(); });
+  $('r-'+id).addEventListener('input', () => { saveState(); calc(); });
+});
+
+if (!loadState()) {
+  loadPreset('austera');
+} else {
+  calc();
+}
+
+const ROLE_LABELS = {
+  back: 'Senior Backend',
+  fs: 'Senior Fullstack',
+  front: 'Senior Frontend',
+  pm: 'PM',
+  mkt: 'Marketing / Ventas',
+  qa: 'QA',
+  ext: 'Asesor / Partner Odoo'
+};
+
+function gatherState() {
+  const values = {};
+  roleIds.forEach(id => {
+    const h = Math.max(0, parseFloat($('h-'+id).value) || 0);
+    const r = Math.max(0, parseFloat($('r-'+id).value) || 0);
+    values[id] = { h, r, sub: Math.round(h * r) };
+  });
+  const intCost = internalRoles.reduce((sum, id) => sum + values[id].sub, 0);
+  const intHrs = internalRoles.reduce((sum, id) => sum + values[id].h, 0);
+  const total = roleIds.reduce((sum, id) => sum + values[id].sub, 0);
+  const partnerRef = 694500;
+  return {
+    scenario: activeScenario,
+    label: presets[activeScenario]?.label || 'Configuración personalizada',
+    desc: presets[activeScenario]?.desc || 'Configuración ajustada manualmente',
+    timeStr: presets[activeScenario]?.timeStr || 'Por definir',
+    values, intCost, intHrs, total, partnerRef,
+    diff: total - partnerRef,
+    avgRate: intHrs > 0 ? Math.round(intCost / intHrs) : 0,
+    today: new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' })
+  };
+}
+
+async function generatePDF() {
+  if (typeof window.jspdf === 'undefined') {
+    alert('La librería para generar PDF no se cargó. Verifica tu conexión a internet y recarga la página.');
+    return;
+  }
+  const btn = $('btn-pdf');
+  const originalText = btn.textContent;
+  btn.textContent = 'Generando...';
+  btn.disabled = true;
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const s = gatherState();
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    buildPDFContent(doc, s);
+    const dateStr = new Date().toISOString().slice(0,10);
+    doc.save(`gerundio_propuesta_erp_${s.scenario}_${dateStr}.pdf`);
+  } catch (err) {
+    console.error('Error generando PDF:', err);
+    alert('Hubo un error al generar el PDF. Detalles en la consola del navegador.');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+function buildPDFContent(doc, s) {
+  // Paleta Gerundio
+  const BLUE = [70, 95, 255];
+  const BLUE_LIGHT = [122, 247, 255];
+  const BLACK = [10, 10, 10];
+  const GRAY_50 = [250, 250, 250];
+  const GRAY_100 = [242, 242, 242];
+  const GRAY_500 = [115, 115, 115];
+  const AQUA = [1, 255, 180];
+  const ROSE = [244, 37, 174];
+  const TEXT = [23, 23, 23];
+
+  const margin = 50;
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const contentW = W - 2 * margin;
+  let y = margin;
+
+  // ─── HEADER (black banner) ─────────────────────────────────
+  doc.setFillColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.rect(0, 0, W, 110, 'F');
+  // Blue diagonal accent
+  doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]);
+  doc.triangle(W - 100, 0, W, 0, W, 110, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(255, 255, 255);
+  doc.text('GERUNDIO', margin, 50);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(180, 180, 180);
+  doc.text('IDEAS EN ACCIÓN', margin, 65);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Propuesta económica · Implementación ERP/CRM', margin, 90);
+
+  y = 140;
+
+  // ─── TITLE ──────────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text(s.label, margin, y);
+  y += 22;
+
+  doc.setDrawColor(BLUE[0], BLUE[1], BLUE[2]);
+  doc.setLineWidth(2);
+  doc.line(margin, y, margin + 60, y);
+  y += 14;
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(GRAY_500[0], GRAY_500[1], GRAY_500[2]);
+  doc.text('Generado el ' + s.today, margin, y);
+  y += 18;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(TEXT[0], TEXT[1], TEXT[2]);
+  const descLines = doc.splitTextToSize(s.desc, contentW);
+  doc.text(descLines, margin, y);
+  y += descLines.length * 13 + 14;
+
+  // ─── INVESTMENT BLOCK (blue) ────────────────────────────────
+  doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]);
+  doc.roundedRect(margin, y, contentW, 90, 4, 4, 'F');
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.text('INVERSIÓN TOTAL ESTIMADA', margin + 20, y + 22);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(255, 255, 255);
+  doc.text('$' + s.total.toLocaleString('es-MX') + ' MXN', margin + 20, y + 56);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Plazo: ' + s.timeStr + '   ·   Horas internas: ' + s.intHrs.toLocaleString('es-MX') + '   ·   Costo cargado promedio: $' + s.avgRate.toLocaleString('es-MX') + '/h', margin + 20, y + 75);
+
+  y += 110;
+
+  // ─── COMPARISON ─────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text('Comparando vs Partner solo', margin, y);
+  y += 14;
+
+  const cardW = (contentW - 20) / 3;
+  const cardH = 70;
+
+  function card(x, fillColor, label, value, sub, valueColor, textColor) {
+    doc.setFillColor(fillColor[0], fillColor[1], fillColor[2]);
+    doc.roundedRect(x, y, cardW, cardH, 4, 4, 'F');
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+    doc.text(label, x + 12, y + 18);
+    doc.setFontSize(15);
+    doc.setTextColor(valueColor[0], valueColor[1], valueColor[2]);
+    doc.text(value, x + 12, y + 42);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+    doc.text(sub, x + 12, y + 58);
+  }
+
+  // Current = black card
+  card(margin, BLACK, 'TU CONFIGURACIÓN', '$' + s.total.toLocaleString('es-MX'), 'MXN · ' + s.timeStr, [255,255,255], [200,200,200]);
+  // Partner = gray card
+  card(margin + cardW + 10, GRAY_50, 'PARTNER SOLO', '$' + s.partnerRef.toLocaleString('es-MX'), 'MXN · 5 meses · llave en mano', BLACK, GRAY_500);
+  // Diff = blue card
+  const diffSign = s.diff >= 0 ? '+' : '−';
+  card(margin + 2*cardW + 20, BLUE, 'DIFERENCIA', diffSign + '$' + Math.abs(s.diff).toLocaleString('es-MX'), s.diff >= 0 ? 'más caro' : 'más barato', [255,255,255], [220,220,255]);
+
+  y += cardH + 26;
+
+  // ─── DETAILED BREAKDOWN ─────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text('Calculando · desglose detallado por rol', margin, y);
+  y += 6;
+
+  const rows = [];
+  rows.push([{ content: 'Equipo interno · desarrollo', colSpan: 4, styles: { fillColor: BLACK, fontStyle: 'bold', textColor: [255,255,255], fontSize: 9 } }]);
+  ['back', 'fs', 'front'].forEach(id => {
+    const v = s.values[id];
+    rows.push([
+      ROLE_LABELS[id],
+      v.h.toString(),
+      '$' + v.r.toLocaleString('es-MX'),
+      '$' + v.sub.toLocaleString('es-MX')
+    ]);
+  });
+  rows.push([{ content: 'Equipo interno · gestión y validación', colSpan: 4, styles: { fillColor: BLACK, fontStyle: 'bold', textColor: [255,255,255], fontSize: 9 } }]);
+  ['pm', 'mkt', 'qa'].forEach(id => {
+    const v = s.values[id];
+    rows.push([
+      ROLE_LABELS[id],
+      v.h.toString(),
+      '$' + v.r.toLocaleString('es-MX'),
+      '$' + v.sub.toLocaleString('es-MX')
+    ]);
+  });
+  rows.push([
+    { content: 'Subtotal interno', styles: { fillColor: GRAY_50, fontStyle: 'bold' } },
+    { content: s.intHrs.toString(), styles: { fillColor: GRAY_50, fontStyle: 'bold', halign: 'center' } },
+    { content: '', styles: { fillColor: GRAY_50 } },
+    { content: '$' + s.intCost.toLocaleString('es-MX'), styles: { fillColor: GRAY_50, fontStyle: 'bold', halign: 'right' } }
+  ]);
+  rows.push([{ content: 'Externo · cash real', colSpan: 4, styles: { fillColor: BLACK, fontStyle: 'bold', textColor: [255,255,255], fontSize: 9 } }]);
+  const ext = s.values.ext;
+  rows.push([
+    ROLE_LABELS.ext,
+    ext.h.toString(),
+    '$' + ext.r.toLocaleString('es-MX'),
+    '$' + ext.sub.toLocaleString('es-MX')
+  ]);
+
+  doc.autoTable({
+    startY: y + 10,
+    margin: { left: margin, right: margin },
+    head: [['Rol', 'Horas', '$ / hora', 'Subtotal']],
+    body: rows,
+    foot: [[
+      { content: 'TOTAL PROYECTO', colSpan: 3, styles: { halign: 'left' } },
+      { content: '$' + s.total.toLocaleString('es-MX') + ' MXN', styles: { halign: 'right' } }
+    ]],
+    theme: 'plain',
+    styles: { fontSize: 9.5, cellPadding: 6, lineColor: GRAY_100, lineWidth: 0.5 },
+    headStyles: { fillColor: BLACK, textColor: 255, fontSize: 9, fontStyle: 'bold' },
+    footStyles: { fillColor: BLUE, textColor: 255, fontStyle: 'bold', fontSize: 11 },
+    columnStyles: {
+      0: { cellWidth: 'auto' },
+      1: { cellWidth: 55, halign: 'center' },
+      2: { cellWidth: 75, halign: 'center' },
+      3: { cellWidth: 95, halign: 'right' }
+    }
+  });
+
+  y = doc.lastAutoTable.finalY + 30;
+
+  if (y > H - 220) {
+    doc.addPage();
+    y = margin;
+  }
+
+  // ─── PROS ───────────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text('Lo que GANAS vs Partner solo', margin, y);
+  y += 6;
+  doc.setDrawColor(AQUA[0], AQUA[1], AQUA[2]);
+  doc.setLineWidth(3);
+  doc.line(margin, y + 2, margin + 40, y + 2);
+  y += 18;
+
+  const pros = [
+    'Capa IA aplicada: scoring de leads, forecast predictivo, asistente conversacional',
+    'Integración con ClickUp incluida (no queda como gap adicional)',
+    'Dashboards BI personalizados que rebasan Odoo Studio',
+    'Capacidad y conocimiento Odoo dentro del equipo interno',
+    'IP propia sobre la capa diferencial',
+    'Independencia futura: iteraciones sin re-contratar al Partner'
+  ];
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  pros.forEach(p => {
+    doc.setFillColor(AQUA[0], AQUA[1], AQUA[2]);
+    doc.circle(margin + 5, y - 3, 4, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+    doc.text('+', margin + 3.5, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(TEXT[0], TEXT[1], TEXT[2]);
+    const lines = doc.splitTextToSize(p, contentW - 22);
+    doc.text(lines, margin + 18, y);
+    y += lines.length * 13 + 4;
+  });
+
+  y += 14;
+
+  if (y > H - 180) {
+    doc.addPage();
+    y = margin;
+  }
+
+  // ─── CONS ───────────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text('Lo que SACRIFICAS vs Partner solo', margin, y);
+  y += 6;
+  doc.setDrawColor(ROSE[0], ROSE[1], ROSE[2]);
+  doc.setLineWidth(3);
+  doc.line(margin, y + 2, margin + 40, y + 2);
+  y += 18;
+
+  const cons = [
+    'Risk transfer total (la responsabilidad la asume el equipo interno)',
+    'Curva de aprendizaje del equipo en Odoo',
+    'Menos metodología formal as-is/to-be',
+    'Coordinación adicional entre frentes técnicos',
+    'Mayor carga sobre el equipo interno'
+  ];
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  cons.forEach(c => {
+    doc.setFillColor(ROSE[0], ROSE[1], ROSE[2]);
+    doc.circle(margin + 5, y - 3, 4, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
+    doc.text('−', margin + 3, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(TEXT[0], TEXT[1], TEXT[2]);
+    const lines = doc.splitTextToSize(c, contentW - 22);
+    doc.text(lines, margin + 18, y);
+    y += lines.length * 13 + 4;
+  });
+
+  y += 18;
+
+  if (y > H - 200) {
+    doc.addPage();
+    y = margin;
+  }
+
+  // ─── METHODOLOGY ────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+  doc.text('Documentando · notas y metodología', margin, y);
+  y += 18;
+
+  const notes = [
+    'Las tarifas por hora corresponden al costo cargado: lo que realmente le cuesta a la empresa tener a esa persona en nómina (gross + IMSS + INFONAVIT + aguinaldo + prestaciones). NO son tarifas de mercado para freelancers externos.',
+    'Conversión rápida desde sueldo neto mensual: tarifa hora cargado ≈ sueldo neto / 80.',
+    'El multiplicador 2x del neto al cargado se compone de: ISR retenido (~1.42x), IMSS/INFONAVIT/SAR patronal (~1.27x) y aguinaldo + prima vacacional + prestaciones (~1.10x). Confirmar con área de finanzas el multiplicador exacto de la empresa.',
+    'Costos recurrentes adicionales (no incluidos en este total): licencias Odoo Standard ($5K-7.5K MXN/mes para 7-9 usuarios), API Claude/OpenAI ($1K-3K MXN/mes), hosting n8n ($300-500 MXN/mes), CFDI/PAC ($0.50-2 MXN por timbre).'
+  ];
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(TEXT[0], TEXT[1], TEXT[2]);
+  notes.forEach(n => {
+    const lines = doc.splitTextToSize(n, contentW);
+    if (y + lines.length * 13 > H - 50) {
+      doc.addPage();
+      y = margin;
+    }
+    doc.text(lines, margin, y);
+    y += lines.length * 13 + 8;
+  });
+
+  // ─── PAGE FOOTERS ───────────────────────────────────────────
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(GRAY_500[0], GRAY_500[1], GRAY_500[2]);
+    doc.text('GERUNDIO · Página ' + i + ' de ' + pageCount, margin, H - 25);
+    doc.text(s.today, W - margin, H - 25, { align: 'right' });
+    if (i > 1) {
+      // Mini header on subsequent pages
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(BLACK[0], BLACK[1], BLACK[2]);
+      doc.text('GERUNDIO', margin, 28);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(GRAY_500[0], GRAY_500[1], GRAY_500[2]);
+      doc.text('Propuesta ERP/CRM · ' + s.label, W - margin, 28, { align: 'right' });
+      doc.setDrawColor(GRAY_100[0], GRAY_100[1], GRAY_100[2]);
+      doc.setLineWidth(0.5);
+      doc.line(margin, 36, W - margin, 36);
+    }
+  }
+}
+</script>
+</body>
+</html>
