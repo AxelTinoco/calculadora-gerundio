@@ -432,6 +432,17 @@
   </div>
   <p class="section-intro">Ajusta las horas por tarea según avance el proyecto. Los totales se recalculan en vivo.</p>
 
+  <!-- DISCLAIMER EDGAR -->
+<!--   <div style="display:flex;align-items:flex-start;gap:12px;background:#FFF8E1;border:1px solid #DDFF00;border-left:4px solid #b8a800;border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;">
+    <span style="font-size:18px;line-height:1.2">⚠️</span>
+    <div>
+      <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#6b5900;margin-bottom:4px;">Disclaimer · Disponibilidad Edgar</div>
+      <div style="font-size:13px;color:#4a3e00;line-height:1.6;">
+        Edgar tiene una disponibilidad promedio de <strong>4 horas/día</strong> para este proyecto (~20 h/semana). Su rol se concentra en <strong>definición, revisión y validación</strong> — no en desarrollo. El desarrollo de dashboards y reportes complejos está redistribuido a <strong>Axel</strong> (Fase 04). Capacidad máxima Edgar en 12 semanas: <strong id="edgar-cap-display">240 h</strong> · Carga asignada: <strong id="edgar-assigned">—</strong>.
+      </div>
+    </div>
+  </div> -->
+
   <div class="personas-grid">
 
     <!-- EDGAR -->
@@ -439,7 +450,7 @@
       <div class="persona-header edgar">
         <div>
           <div class="name">Edgar</div>
-          <div class="role">Config · PM · Reportes</div>
+          <div class="role">Config · PM · Revisión · 4h/día</div>
         </div>
         <div class="total-hrs">
           <div class="big" id="total-edgar">—</div>
@@ -447,22 +458,23 @@
         </div>
       </div>
       <div class="persona-tasks">
-        <div class="task-group-header">Fase 01 · Config base (Sem 1–2)</div>
-        <div class="task-row"><span class="task-name">Activar módulos CRM, Ventas, Facturación, Proyectos, Timesheets</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="16" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Definir catálogo de servicios</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Configurar etapas del pipeline y campos personalizados</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="16" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Crear usuarios y perfiles (vendedores, líderes, dirección)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Validar estructura con prueba gratuita Odoo (15 días)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="4"><span class="unit">h</span></div></div>
+        <div class="task-group-header">Fase 01 · Config base (Sem 1–2) · máx 40 h</div>
+        <div class="task-row"><span class="task-name">Activar módulos CRM, Ventas, Facturación, Proyectos, Timesheets</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="12" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Definir catálogo de servicios (con equipo)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Configurar etapas del pipeline y campos personalizados</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="10" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Crear usuarios y perfiles (vendedores, líderes, dirección)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="6" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Validar estructura con prueba gratuita Odoo (15 días)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="4" min="0" step="2"><span class="unit">h</span></div></div>
 
-        <div class="task-group-header">Fase 04 · Reportes nativos (Sem 8–10)</div>
-        <div class="task-row"><span class="task-name">Pipeline por etapa y vendedor (kanban + tabla)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="20" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Ventas y facturación por mes/año (comparativas históricas)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="20" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Ticket promedio por cliente (oportunidades cerradas)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="12" min="0" step="4"><span class="unit">h</span></div></div>
+        <div class="task-group-header">Fase 04 · Revisión reportes nativos (Sem 8–10) · máx 60 h</div>
+        <div class="task-row"><span class="task-name">Revisar y aprobar pipeline por etapa y vendedor</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="12" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Revisar ventas y facturación por mes/año</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="12" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Revisar ticket promedio por cliente</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
 
-        <div class="task-group-header">Fase 04 · Desarrollo dashboards (Sem 9–12)</div>
-        <div class="task-row"><span class="task-name">Rentabilidad por práctica (horas ClickUp vs vendidas)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="40" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Déficit de horas por cliente (cotizadas vs facturadas vs trabajadas)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="32" min="0" step="4"><span class="unit">h</span></div></div>
-        <div class="task-row"><span class="task-name">Origen del lead y tasa de conversión (upsell, alianzas, MKT, PR)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="32" min="0" step="4"><span class="unit">h</span></div></div>
+        <div class="task-group-header">Fase 04 · UAT y validación dashboards (Sem 10–12) · máx 60 h</div>
+        <div class="task-row"><span class="task-name">Definir requerimientos de rentabilidad por práctica (brief para Axel)</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">UAT: déficit de horas por cliente</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">UAT: origen del lead y tasa de conversión</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Sign-off final y ajustes con dirección</span><div class="task-hrs"><input type="number" class="hrs-edgar" value="8" min="0" step="2"><span class="unit">h</span></div></div>
       </div>
       <div class="persona-subtotal">
         <span class="label">Total Edgar</span>
@@ -528,6 +540,11 @@
         <div class="task-row"><span class="task-name">Migración histórica de horas ClickUp vía Node.js + Odoo API</span><div class="task-hrs"><input type="number" class="hrs-axel" value="40" min="0" step="4"><span class="unit">h</span></div></div>
         <div class="task-row"><span class="task-name">Testing y validación de flujos end-to-end</span><div class="task-hrs"><input type="number" class="hrs-axel" value="32" min="0" step="4"><span class="unit">h</span></div></div>
         <div class="task-row"><span class="task-name">Documentación de workflows n8n y runbooks de mantenimiento</span><div class="task-hrs"><input type="number" class="hrs-axel" value="16" min="0" step="4"><span class="unit">h</span></div></div>
+
+        <div class="task-group-header" style="border-left:3px solid var(--axel);">Fase 04 · Desarrollo dashboards — redistribuido de Edgar (Sem 9–12)</div>
+        <div class="task-row"><span class="task-name">Desarrollo: dashboard rentabilidad por práctica (horas ClickUp vs vendidas)</span><div class="task-hrs"><input type="number" class="hrs-axel" value="32" min="0" step="4"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Desarrollo: déficit de horas por cliente (cotizadas vs facturadas vs trabajadas)</span><div class="task-hrs"><input type="number" class="hrs-axel" value="24" min="0" step="4"><span class="unit">h</span></div></div>
+        <div class="task-row"><span class="task-name">Desarrollo: origen del lead y tasa de conversión (upsell, alianzas, MKT, PR)</span><div class="task-hrs"><input type="number" class="hrs-axel" value="24" min="0" step="4"><span class="unit">h</span></div></div>
       </div>
       <div class="persona-subtotal">
         <span class="label">Total Axel</span>
@@ -562,13 +579,14 @@
 
   <div class="resumen-grid">
     <div class="resumen-card">
-      <div class="resumen-card-header edgar">Edgar · Config + PM + Reportes</div>
+      <div class="resumen-card-header edgar">Edgar · Config + PM · 4h/día</div>
       <div class="resumen-card-body">
         <div class="hrs" id="resumen-edgar">—</div>
         <div class="breakdown">
-          Fase 01 · Config base: 56h<br>
-          Fase 04 · Reportes nativos: 52h<br>
-          Fase 04 · Dashboards desarrollo: 104h
+          Fase 01 · Config base: ~40h<br>
+          Fase 04 · Revisión reportes: ~32h<br>
+          Fase 04 · UAT dashboards: ~32h<br>
+          <span style="color:#b8a800;font-weight:600">⚠ Máx 240h · 4h/día promedio</span>
         </div>
       </div>
     </div>
@@ -584,13 +602,13 @@
       </div>
     </div>
     <div class="resumen-card">
-      <div class="resumen-card-header axel">Axel · n8n + ClickUp + Integración</div>
+      <div class="resumen-card-header axel">Axel · n8n + ClickUp + Dashboards</div>
       <div class="resumen-card-body">
         <div class="hrs" id="resumen-axel">—</div>
         <div class="breakdown">
           Fase 01 · Config apoyo: 16h<br>
-          Fase 03 · n8n + Sincronización: 200h<br>
-          Fase 03 · Documentación: 16h
+          Fase 03 · n8n + Sincronización: 216h<br>
+          Fase 04 · Dashboards (redistribuido): ~80h
         </div>
       </div>
     </div>
@@ -680,6 +698,15 @@ function calcAll() {
   const tot = e + h + a;
 
   const fmt = n => n.toLocaleString('es-MX') + ' h';
+
+  // Edgar capacity: 4h/day × 5 days × 12 weeks = 240h max
+  const edgarCap = 240;
+  const edgarPct = Math.round((e / edgarCap) * 100);
+  const capEl = document.getElementById('edgar-assigned');
+  if (capEl) {
+    capEl.textContent = fmt(e) + ' (' + edgarPct + '% de capacidad)';
+    capEl.style.color = edgarPct > 90 ? '#c0392b' : edgarPct > 70 ? '#e67e22' : '#27ae60';
+  }
 
   ['edgar','helios','axel'].forEach(p => {
     const val = p === 'edgar' ? e : p === 'helios' ? h : a;
