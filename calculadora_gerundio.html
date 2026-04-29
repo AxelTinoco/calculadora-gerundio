@@ -207,11 +207,56 @@
   button.action.primary { background: var(--blue); color: var(--white); border-color: var(--blue); }
   button.action.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
 
+  /* ── PROJECTION ─── */
+  .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .cap-card { padding: 16px 20px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--white); }
+  .cap-edgar { border-left: 4px solid var(--edgar); }
+  .cap-helios { border-left: 4px solid var(--aqua); }
+  .cap-axel { border-left: 4px solid var(--axel); }
+  .cap-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+  .cap-val { font-family: var(--font-mono); font-size: 18px; font-weight: 500; }
+  .cap-sub { font-size: 11px; opacity: 0.6; }
+  .load-table { width: 100%; border-collapse: collapse; min-width: 960px; }
+  .load-table th { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 4px; text-align: center; border-bottom: 2px solid var(--black); white-space: nowrap; }
+  .load-table th.lt-label { text-align: left; min-width: 100px; }
+  .load-table th.lt-result { background: var(--gray-50); min-width: 90px; }
+  .load-table td { padding: 8px 4px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; text-align: center; }
+  .load-table td.lt-label { text-align: left; padding: 10px 8px; }
+  .load-table td.lt-result { background: var(--gray-50); font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+  .lt-persona { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+  .lt-cap { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+  .load-table input.li { width: 44px; padding: 4px; border: 1px solid var(--gray-200); border-radius: var(--radius); font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-align: center; background: var(--white); color: var(--text); transition: all 0.1s; }
+  .load-table input.li:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px rgba(70,95,255,0.12); }
+  .load-table input.li.overload { background: #FFF0F0; border-color: var(--rose); color: #c0392b; }
+  .load-table input.li.high { background: #FFF8E1; border-color: #e6a817; }
+  .impact-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .impact-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .impact-persona { padding: 12px 16px; font-family: var(--font-display); font-size: 18px; letter-spacing: -0.01em; }
+  .impact-body { padding: 16px 20px; background: var(--white); }
+  .impact-stat { font-family: var(--font-mono); font-size: 26px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; margin-bottom: 2px; margin-top: 14px; }
+  .impact-stat:first-child { margin-top: 0; }
+  .impact-avail { font-size: 20px; color: var(--blue); }
+  .impact-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+  .impact-pill { display: inline-block; margin-top: 14px; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  .pill-ok { background: var(--aqua); color: #004d35; }
+  .pill-warn { background: var(--yellow); color: #5a5000; }
+  .pill-danger { background: var(--rose); color: #fff; }
+  .burn-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .burn-label { font-family: var(--font-mono); font-size: 10px; width: 26px; text-align: right; color: var(--text-muted); flex-shrink: 0; }
+  .burn-bars { display: flex; gap: 2px; flex: 1; align-items: center; }
+  .burn-seg { height: 16px; border-radius: 2px; min-width: 2px; }
+  .burn-seg-edgar { background: var(--edgar); opacity: 0.85; }
+  .burn-seg-helios { background: var(--aqua); opacity: 0.9; }
+  .burn-seg-axel { background: var(--axel); opacity: 0.8; }
+  .burn-total { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); width: 50px; flex-shrink: 0; }
+
   /* ── RESPONSIVE ─── */
   @media (max-width: 900px) {
     .fases-grid { grid-template-columns: repeat(2, 1fr); }
     .personas-grid { grid-template-columns: 1fr; }
     .resumen-grid { grid-template-columns: 1fr; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .impact-summary { grid-template-columns: 1fr; }
     .header-grid { grid-template-columns: 1fr; gap: 32px; }
     header { margin: 0 -16px 24px; padding: 36px 24px; }
     header::before { width: 80px; }
@@ -441,8 +486,8 @@
         Edgar tiene una disponibilidad promedio de <strong>4 horas/día</strong> para este proyecto (~20 h/semana). Su rol se concentra en <strong>definición, revisión y validación</strong> — no en desarrollo. El desarrollo de dashboards y reportes complejos está redistribuido a <strong>Axel</strong> (Fase 04). Capacidad máxima Edgar en 12 semanas: <strong id="edgar-cap-display">240 h</strong> · Carga asignada: <strong id="edgar-assigned">—</strong>.
       </div>
     </div>
-  </div> -->
-
+  </div>
+ -->
   <div class="personas-grid">
 
     <!-- EDGAR -->
@@ -615,10 +660,175 @@
   </div>
 </section>
 
-<!-- ─── 05 ARQUITECTURA ───────────────────────────────────── -->
+<!-- ─── 05 PROYECCIÓN DE IMPACTO ──────────────────────────── -->
 <section>
   <div class="section-head">
     <span class="section-num">05</span>
+    <h2>Proyectando — impacto de proyectos cliente en el timeline</h2>
+    <span class="gerund">Proyectando</span>
+  </div>
+  <p class="section-intro">Ingresa cuántas horas por semana consume cada persona en proyectos de clientes. La proyección calcula en vivo cómo se desplaza la fecha de entrega del ERP y qué semana terminaría realmente cada quien.</p>
+
+  <!-- CAPACIDAD BASE -->
+  <div class="cap-grid">
+    <div class="cap-card cap-edgar">
+      <div class="cap-label">Edgar · capacidad base</div>
+      <div class="cap-val">20 h/sem <span class="cap-sub">(4h/día × 5 días)</span></div>
+    </div>
+    <div class="cap-card cap-helios">
+      <div class="cap-label">Helios · capacidad base</div>
+      <div class="cap-val">40 h/sem <span class="cap-sub">(8h/día × 5 días)</span></div>
+    </div>
+    <div class="cap-card cap-axel">
+      <div class="cap-label">Axel · capacidad base</div>
+      <div class="cap-val">40 h/sem <span class="cap-sub">(8h/día × 5 días)</span></div>
+    </div>
+  </div>
+
+  <!-- TABLA DE CARGA SEMANAL -->
+  <div style="overflow-x:auto; margin-top:24px;">
+    <table class="load-table" id="load-table">
+      <thead>
+        <tr>
+          <th class="lt-label">Persona</th>
+          <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th><th>S6</th>
+          <th>S7</th><th>S8</th><th>S9</th><th>S10</th><th>S11</th><th>S12</th>
+          <th>S13</th><th>S14</th><th>S15</th><th>S16</th>
+          <th class="lt-result">Horas Odoo disponibles</th>
+          <th class="lt-result">Sem. estimada fin</th>
+          <th class="lt-result">Desfase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- EDGAR -->
+        <tr id="row-edgar">
+          <td class="lt-label"><span class="lt-persona" style="background:var(--edgar);color:#fff">Edgar</span><br><span class="lt-cap">cap. 20h/sem</span></td>
+          <!-- 16 semanas de inputs, default 8h cliente (40% de 20h) -->
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="12" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="12" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="12" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="12" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="10" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td><input type="number" class="li edgar-li" data-cap="20" value="8" min="0" max="20" step="2"></td>
+          <td class="lt-result" id="avail-edgar">—</td>
+          <td class="lt-result" id="finish-edgar">—</td>
+          <td class="lt-result" id="delay-edgar">—</td>
+        </tr>
+        <!-- HELIOS -->
+        <tr id="row-helios">
+          <td class="lt-label"><span class="lt-persona" style="background:var(--aqua);color:#004d35">Helios</span><br><span class="lt-cap">cap. 40h/sem</span></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="10" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="10" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li helios-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td class="lt-result" id="avail-helios">—</td>
+          <td class="lt-result" id="finish-helios">—</td>
+          <td class="lt-result" id="delay-helios">—</td>
+        </tr>
+        <!-- AXEL -->
+        <tr id="row-axel">
+          <td class="lt-label"><span class="lt-persona" style="background:var(--axel);color:#fff">Axel</span><br><span class="lt-cap">cap. 40h/sem</span></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="12" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="12" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="12" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="20" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td><input type="number" class="li axel-li" data-cap="40" value="16" min="0" max="40" step="2"></td>
+          <td class="lt-result" id="avail-axel">—</td>
+          <td class="lt-result" id="finish-axel">—</td>
+          <td class="lt-result" id="delay-axel">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BARRAS DE PROGRESO VISUAL -->
+  <div style="margin-top:28px;">
+    <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:14px;">Velocidad semanal disponible para Odoo — semanas 1 a 16</div>
+    <div id="burn-chart" style="display:flex;flex-direction:column;gap:6px;"></div>
+  </div>
+
+  <!-- RESUMEN DE IMPACTO -->
+  <div class="impact-summary" id="impact-summary" style="margin-top:28px;">
+    <div class="impact-card" id="impact-edgar">
+      <div class="impact-persona" style="background:var(--edgar)">Edgar</div>
+      <div class="impact-body">
+        <div class="impact-stat" id="is-edgar-need">—</div>
+        <div class="impact-lbl">horas Odoo necesarias</div>
+        <div class="impact-stat impact-avail" id="is-edgar-avail">—</div>
+        <div class="impact-lbl">disponibles en 16 sem</div>
+        <div class="impact-stat" id="is-edgar-fin">—</div>
+        <div class="impact-lbl" id="is-edgar-fin-lbl">semana estimada de fin</div>
+        <div class="impact-pill" id="is-edgar-pill">—</div>
+      </div>
+    </div>
+    <div class="impact-card" id="impact-helios">
+      <div class="impact-persona" style="background:var(--aqua);color:#004d35">Helios</div>
+      <div class="impact-body">
+        <div class="impact-stat" id="is-helios-need">—</div>
+        <div class="impact-lbl">horas Odoo necesarias</div>
+        <div class="impact-stat impact-avail" id="is-helios-avail">—</div>
+        <div class="impact-lbl">disponibles en 16 sem</div>
+        <div class="impact-stat" id="is-helios-fin">—</div>
+        <div class="impact-lbl" id="is-helios-fin-lbl">semana estimada de fin</div>
+        <div class="impact-pill" id="is-helios-pill">—</div>
+      </div>
+    </div>
+    <div class="impact-card" id="impact-axel">
+      <div class="impact-persona" style="background:var(--axel)">Axel</div>
+      <div class="impact-body">
+        <div class="impact-stat" id="is-axel-need">—</div>
+        <div class="impact-lbl">horas Odoo necesarias</div>
+        <div class="impact-stat impact-avail" id="is-axel-avail">—</div>
+        <div class="impact-lbl">disponibles en 16 sem</div>
+        <div class="impact-stat" id="is-axel-fin">—</div>
+        <div class="impact-lbl" id="is-axel-fin-lbl">semana estimada de fin</div>
+        <div class="impact-pill" id="is-axel-pill">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTA GLOBAL -->
+  <div id="global-alert" style="margin-top:16px;padding:14px 18px;border-radius:var(--radius);font-size:13px;line-height:1.6;display:none;"></div>
+
+</section>
+
+<!-- ─── 06 ARQUITECTURA ───────────────────────────────────── -->
+<section>
+  <div class="section-head">
+    <span class="section-num">06</span>
     <h2>Conectando — arquitectura con n8n</h2>
     <span class="gerund">Conectando</span>
   </div>
@@ -719,9 +929,10 @@ function calcAll() {
 }
 
 document.querySelectorAll('input[type="number"]').forEach(i => {
-  i.addEventListener('input', calcAll);
+  i.addEventListener('input', () => { if(i.classList.contains('hrs-edgar')||i.classList.contains('hrs-helios')||i.classList.contains('hrs-axel')) { calcAll(); calcProjection(); } });
 });
 
+calcAll();
 function exportTxt() {
   const e = calcPersona('hrs-edgar');
   const h = calcPersona('hrs-helios');
@@ -752,7 +963,162 @@ function exportTxt() {
   a2.click(); URL.revokeObjectURL(url);
 }
 
-calcAll();
+// ── PROJECTION ENGINE ──────────────────────────────────────
+
+const PERSONAS_PROJ = [
+  { id: 'edgar',  cls: 'edgar-li',  cap: 20, color: '#465FFF', needFn: () => calcPersona('hrs-edgar') },
+  { id: 'helios', cls: 'helios-li', cap: 40, color: '#01FFB4', needFn: () => calcPersona('hrs-helios') },
+  { id: 'axel',   cls: 'axel-li',   cap: 40, color: '#F425AE', needFn: () => calcPersona('hrs-axel')  },
+];
+const TOTAL_WEEKS = 16;
+
+function getLoadRow(cls) {
+  const vals = [];
+  document.querySelectorAll('.' + cls).forEach(i => {
+    const cap = parseFloat(i.dataset.cap) || 0;
+    const client = Math.min(parseFloat(i.value) || 0, cap);
+    vals.push({ client, odoo: cap - client });
+  });
+  return vals;
+}
+
+function colorInputs() {
+  document.querySelectorAll('.li').forEach(i => {
+    const cap = parseFloat(i.dataset.cap) || 0;
+    const v   = parseFloat(i.value) || 0;
+    i.classList.remove('overload', 'high');
+    if (v >= cap)           i.classList.add('overload');
+    else if (v >= cap * 0.8) i.classList.add('high');
+  });
+}
+
+function calcProjection() {
+  colorInputs();
+  const chart = document.getElementById('burn-chart');
+  chart.innerHTML = '';
+
+  // build weekly odoo hours per persona
+  const weekData = {}; // {edgar: [h1,h2,...], helios: [...], axel: [...]}
+  PERSONAS_PROJ.forEach(p => {
+    weekData[p.id] = getLoadRow(p.cls).map(w => w.odoo);
+  });
+
+  // burn chart rows
+  for (let w = 0; w < TOTAL_WEEKS; w++) {
+    const row = document.createElement('div');
+    row.className = 'burn-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'burn-label';
+    lbl.textContent = 'S' + (w + 1);
+    row.appendChild(lbl);
+    const bars = document.createElement('div');
+    bars.className = 'burn-bars';
+    let rowTotal = 0;
+    PERSONAS_PROJ.forEach(p => {
+      const h = weekData[p.id][w] || 0;
+      rowTotal += h;
+      if (h > 0) {
+        const seg = document.createElement('div');
+        seg.className = 'burn-seg burn-seg-' + p.id;
+        seg.style.width = (h * 3) + 'px';
+        seg.title = p.id + ': ' + h + 'h libres';
+        bars.appendChild(seg);
+      }
+    });
+    const tot = document.createElement('div');
+    tot.className = 'burn-total';
+    tot.textContent = rowTotal + 'h';
+    row.appendChild(bars);
+    row.appendChild(tot);
+    chart.appendChild(row);
+  }
+
+  // per-persona projection
+  PERSONAS_PROJ.forEach(p => {
+    const need = Math.round(p.needFn());
+    const weeks = weekData[p.id];
+    const totalAvail = weeks.reduce((a, b) => a + b, 0);
+
+    // find finish week
+    let cum = 0, finWeek = null;
+    for (let w = 0; w < weeks.length; w++) {
+      cum += weeks[w];
+      if (cum >= need && finWeek === null) finWeek = w + 1;
+    }
+    if (finWeek === null) finWeek = '>' + TOTAL_WEEKS;
+
+    const baseline = p.id === 'edgar' ? 12 : p.id === 'helios' ? 11 : 12;
+    const delay = typeof finWeek === 'number' ? finWeek - baseline : null;
+
+    // update result cells
+    document.getElementById('avail-' + p.id).textContent = totalAvail + ' h';
+    document.getElementById('finish-' + p.id).textContent = typeof finWeek === 'number' ? 'Sem ' + finWeek : finWeek;
+    const delayEl = document.getElementById('delay-' + p.id);
+    if (delay === null) {
+      delayEl.textContent = '⚠ sin datos';
+      delayEl.style.color = '#c0392b';
+    } else if (delay <= 0) {
+      delayEl.textContent = delay === 0 ? 'En tiempo' : delay + ' sem adelanto';
+      delayEl.style.color = '#27ae60';
+    } else {
+      delayEl.textContent = '+' + delay + ' sem';
+      delayEl.style.color = delay <= 2 ? '#e67e22' : '#c0392b';
+    }
+
+    // impact cards
+    document.getElementById('is-' + p.id + '-need').textContent = need + ' h';
+    document.getElementById('is-' + p.id + '-avail').textContent = totalAvail + ' h';
+    document.getElementById('is-' + p.id + '-fin').textContent = typeof finWeek === 'number' ? 'Sem ' + finWeek : finWeek;
+
+    const pill = document.getElementById('is-' + p.id + '-pill');
+    if (delay === null || delay > 3) {
+      pill.textContent = '🔴 Alto riesgo de retraso';
+      pill.className = 'impact-pill pill-danger';
+    } else if (delay > 0) {
+      pill.textContent = '🟡 Retraso ' + delay + ' sem';
+      pill.className = 'impact-pill pill-warn';
+    } else {
+      pill.textContent = '🟢 En tiempo';
+      pill.className = 'impact-pill pill-ok';
+    }
+  });
+
+  // global alert
+  const alert = document.getElementById('global-alert');
+  const delays = PERSONAS_PROJ.map(p => {
+    const need = Math.round(p.needFn());
+    const weeks = weekData[p.id];
+    let cum = 0, finWeek = null;
+    for (let w = 0; w < weeks.length; w++) {
+      cum += weeks[w];
+      if (cum >= need && finWeek === null) finWeek = w + 1;
+    }
+    const baseline = p.id === 'edgar' ? 12 : p.id === 'helios' ? 11 : 12;
+    return { name: p.id, delay: finWeek ? finWeek - baseline : 99 };
+  });
+  const maxDelay = Math.max(...delays.map(d => d.delay));
+  const bottleneck = delays.find(d => d.delay === maxDelay);
+  alert.style.display = 'block';
+  if (maxDelay <= 0) {
+    alert.style.background = '#f0fff8';
+    alert.style.border = '1px solid var(--aqua)';
+    alert.style.borderLeft = '4px solid #00c28a';
+    alert.innerHTML = '✅ <strong>Sin desfase proyectado.</strong> Con la carga actual de proyectos cliente, los tres miembros terminan a tiempo o antes del baseline de 12 semanas.';
+  } else if (maxDelay <= 2) {
+    alert.style.background = '#FFFDE7';
+    alert.style.border = '1px solid #f39c12';
+    alert.style.borderLeft = '4px solid #f39c12';
+    alert.innerHTML = '⚠️ <strong>Desfase moderado de ' + maxDelay + ' semana(s).</strong> El cuello de botella es <strong>' + bottleneck.name.charAt(0).toUpperCase() + bottleneck.name.slice(1) + '</strong>. Considera redistribuir carga cliente o priorizar tareas Odoo en las semanas de mayor saturación.';
+  } else {
+    alert.style.background = '#FFF0F0';
+    alert.style.border = '1px solid var(--rose)';
+    alert.style.borderLeft = '4px solid #c0392b';
+    alert.innerHTML = '🔴 <strong>Riesgo alto: +' + maxDelay + ' semanas de desfase.</strong> <strong>' + bottleneck.name.charAt(0).toUpperCase() + bottleneck.name.slice(1) + '</strong> es el cuello de botella. Se recomienda negociar plazos de entrega con clientes o reforzar al equipo en las fases críticas.';
+  }
+}
+
+document.querySelectorAll('.li').forEach(i => i.addEventListener('input', calcProjection));
+calcProjection();
 </script>
 </body>
 </html>
